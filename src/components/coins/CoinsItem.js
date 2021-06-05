@@ -1,32 +1,35 @@
 import React from 'react'
-import { Text, View, StyleSheet, Image, Platform } from 'react-native'
+import { Text, View, StyleSheet, Image, Platform, Pressable } from 'react-native'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 import { ArrowDown, ArrowUp } from '../../assets'
 
-const CoinsItem = ({name, symbol, percent_change_1h, price_usd}) => {
+const CoinsItem = ({item, onPress}) => {
 
     const getImgArrow = () => {
         let percentCero = 0;
-        return percent_change_1h > percentCero ? ArrowUp : ArrowDown;
+        return item.percent_change_1h > percentCero ? ArrowUp : ArrowDown;
     }
 
     return(
-        <View style={styles.container}>
+        <Pressable
+            onPress={onPress}
+            style={styles.container}
+        >
             <View style={styles.row}>
-                <Text style={styles.symbolText}>{symbol}</Text>
-                <Text style={styles.nameText}>{name}</Text>
-                <Text style={styles.priceText}>{`USD${price_usd}`}</Text>
+                <Text style={styles.symbolText}>{item.symbol}</Text>
+                <Text style={styles.nameText}>{item.name}</Text>
+                <Text style={styles.priceText}>{`USD${item.price_usd}`}</Text>
             </View>
 
             <View style={styles.row}>
-                <Text style={styles.percentText}>{percent_change_1h}</Text>
+                <Text style={styles.percentText}>{item.percent_change_1h}</Text>
                 <Image
                     source={getImgArrow()}
                     style={styles.imgIcon}
                 />
             </View>
-        </View>
+        </Pressable>
     )
 }
 

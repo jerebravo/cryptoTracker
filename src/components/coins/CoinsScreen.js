@@ -4,7 +4,7 @@ import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { Http, Colors } from '../../libs';
 import CoinsItem from './CoinsItem';
 
-const CoinsScreen = () => {
+const CoinsScreen = (props) => {
 
     const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false)
@@ -16,6 +16,10 @@ const CoinsScreen = () => {
             setLoading(false)
         })
     }, []);
+
+    const onPress = (coin) => {
+        props.navigation.navigate('CoinDetail', { coin });
+    }
 
     return(
         <View style={styles.container}>
@@ -29,7 +33,12 @@ const CoinsScreen = () => {
                         :
                     <FlatList
                         data={coins}
-                        renderItem={({item}) => <CoinsItem {...item} />}
+                        renderItem={({item}) =>
+                            <CoinsItem
+                                item={item}
+                                onPress={() => onPress(item)}
+                            />
+                        }
                     />
             }
         </View>
