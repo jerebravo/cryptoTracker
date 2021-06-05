@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
-import Http from 'cryptoTracker/src/libs/http';
+
+import { Http, Colors } from '../../libs';
 import CoinsItem from './CoinsItem';
 
 const CoinsScreen = () => {
@@ -21,7 +22,7 @@ const CoinsScreen = () => {
             {
                 loading ?
                     <ActivityIndicator
-                        color="blue"
+                        color="white"
                         size="large"
                         style={styles.loader}
                     />
@@ -38,21 +39,7 @@ const CoinsScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "white",
-    },
-    titleText: {
-        color: "black",
-        textAlign: "center"
-    },
-    btn: {
-        padding: 8,
-        backgroundColor: "blue",
-        borderRadius: 8,
-        margin: 16
-    },
-    btnText: {
-        color: "#fff",
-        textAlign: 'center'
+        backgroundColor: Colors.charade,
     },
     loader: {
         marginTop: 100
