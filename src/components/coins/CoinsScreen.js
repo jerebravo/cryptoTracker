@@ -1,41 +1,47 @@
-import React, { Component } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import Http from 'cryptoTracker/src/libs/http';
+import CoinsItem from './CoinsItem';
 
-class CoinsScreen extends Component {
+const CoinsScreen = () => {
 
-    componentDidMount = async () => {
-        const coins = Http.instance.get("https://api.coinlore.net/api/tickers/");
-        console.log("coins",coins)
-    }
+    const [coins, setCoins] = useState([]);
+    const [loading, setLoading] = useState(false)
 
-    handlePress = () => {
-        console.log("go to detail", this.props)
+    useEffect(async () => {
+        setLoading(true)
+        Http.instance.get("https://api.coinlore.net/api/tickers/").then((resp) => {
+            setCoins(resp?.data || [])
+            setLoading(false)
+        })
+    }, []);
 
-        this.props.navigation.navigate('CoinDetail')
-    }
-
-    render() {
-        return(
-            <View style={styles.container}>
-                <Text style={styles.titleText}>Coins Screen</Text>
-                <Pressable style={styles.btn} onPress={this.handlePress}>
-                    <Text style={styles.btnText}>
-                        Ir a Detail
-                    </Text>
-                </Pressable>
-            </View>
-        )
-    }
+    return(
+        <View style={styles.container}>
+            {
+                loading ?
+                    <ActivityIndicator
+                        color="blue"
+                        size="large"
+                        style={styles.loader}
+                    />
+                        :
+                    <FlatList
+                        data={coins}
+                        renderItem={({item}) => <CoinsItem {...item} />}
+                    />
+            }
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "red",
+        backgroundColor: "white",
     },
     titleText: {
-        color: "#fff",
+        color: "black",
         textAlign: "center"
     },
     btn: {
@@ -47,6 +53,9 @@ const styles = StyleSheet.create({
     btnText: {
         color: "#fff",
         textAlign: 'center'
+    },
+    loader: {
+        marginTop: 100
     }
 })
 
